@@ -24,6 +24,10 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
+  # fonts:
+  #   - family: Outfit
+  #     fonts:
+  #       - asset: assets/fonts/Outfit-VariableFont_wght.tff
   uses-material-design: true
 
   # Enable generation of localized Strings from arb files.

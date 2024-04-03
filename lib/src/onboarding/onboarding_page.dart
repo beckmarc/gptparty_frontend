@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
-class OnboardingStepper extends StatefulWidget {
+class OnboardingPage extends StatefulWidget {
   @override
-  _OnboardingStepperState createState() => _OnboardingStepperState();
+  _OnboardingPageState createState() => _OnboardingPageState();
 }
 
-class _OnboardingStepperState extends State<OnboardingStepper> {
+class _OnboardingPageState extends State<OnboardingPage> {
   int _currentStep = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Onboarding Steps'),
+        title: Center(
+          child: Text('Onboarding for Armin Heinzel'),
+        ),
       ),
       body: Stepper(
         currentStep: _currentStep,
+        onStepTapped: (step) => setState(() => _currentStep = step),
         onStepContinue: () {
           if (_currentStep < _getSteps().length - 1) {
             setState(() {
@@ -31,6 +34,17 @@ class _OnboardingStepperState extends State<OnboardingStepper> {
           }
         },
         steps: _getSteps(),
+        controlsBuilder: (BuildContext context, ControlsDetails details) {
+          return Row(
+            children: <Widget>[
+              TextButton(
+                onPressed: details.onStepContinue,
+                child: const Text('Next'),
+              ),
+              // You can add more custom buttons here if needed
+            ],
+          );
+        },
       ),
     );
   }
