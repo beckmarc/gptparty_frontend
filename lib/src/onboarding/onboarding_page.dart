@@ -131,42 +131,45 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
-
-                    Text(
-                      'Links',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                    if (step.links.isNotEmpty) SizedBox(height: 16),
+                    if (step.links.isNotEmpty)
+                      Text(
+                        'Links',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    ...step.links
-                        .map(
-                          (link) => InkWell(
-                            onTap: () => _launchURL(link),
-                            child: Text(
-                              link,
-                              style: TextStyle(
-                                  color: Color(0xFFFF4081),
-                                  fontSize: 16,
-                                  decoration: TextDecoration.underline),
+                    if (step.links.isNotEmpty) SizedBox(height: 4),
+                    if (step.links.isNotEmpty)
+                      ...step.links
+                          .map(
+                            (link) => InkWell(
+                              onTap: () => _launchURL(link),
+                              child: Text(
+                                link,
+                                style: TextStyle(
+                                    color: Color(0xFFFF4081),
+                                    fontSize: 16,
+                                    decoration: TextDecoration.underline),
+                              ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                    SizedBox(height: 16),
-                    Text(
-                      'Tasks',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                          )
+                          .toList(),
+                    if (step.tasks.isNotEmpty) SizedBox(height: 16),
+                    if (step.tasks.isNotEmpty)
+                      Text(
+                        'Tasks',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Flexible(
-                      child: createTaskList(step.tasks),
-                    ),
+                    if (step.tasks.isNotEmpty) SizedBox(height: 4),
+                    if (step.tasks.isNotEmpty)
+                      Flexible(
+                        child: createTaskList(step.tasks),
+                      ),
 
                     // Text(
                     //   'Images',
