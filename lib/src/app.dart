@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gptparty_frontend/src/onboarding/onboarding_page.dart';
+import 'package:gptparty_frontend/src/screens/onboarding_generator.dart';
 
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
@@ -46,8 +47,10 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  default:
+                  case OnboardingPage.routeName:
                     return OnboardingPage();
+                  default:
+                    return const OnboardingGenerator();
                 }
               },
             );

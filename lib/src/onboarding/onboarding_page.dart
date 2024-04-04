@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatefulWidget {
+  static const routeName = '/onboarding';
+
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
 }
