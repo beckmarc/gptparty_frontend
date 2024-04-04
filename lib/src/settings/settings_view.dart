@@ -18,7 +18,11 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text('OnboardAI', style: Theme.of(context).textTheme.titleLarge),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        elevation: 0,
+        // Center title if desired
+        centerTitle: true,
       ),
       body: Column(
         children: [
