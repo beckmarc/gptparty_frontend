@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:gptparty_frontend/src/onboarding/onboarding_page.dart';
 
@@ -33,7 +34,18 @@ class MyApp extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
-          theme: ThemeData(),
+          theme: ThemeData(
+            // Use 'useMaterial3' to enable Material 3 features, if you prefer
+            useMaterial3: true,
+
+            // Define the default brightness and colors.
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Color(0xFF607D8B),
+              brightness: Brightness.light,
+            ),
+
+            fontFamily: GoogleFonts.outfit().fontFamily,
+          ),
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
@@ -46,8 +58,10 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  default:
+                  case OnboardingPage.routeName:
                     return OnboardingPage();
+                  default:
+                    return SettingsView(controller: settingsController);
                 }
               },
             );
@@ -56,4 +70,8 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+class OnboardingPageArgs {
+  late int id;
 }
