@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:gptparty_frontend/src/commons/const.dart';
 import 'package:gptparty_frontend/src/models/api/onboarding_step.dart';
@@ -39,5 +41,20 @@ class OnboardingGenerationServiceImpl extends OnboardingGenerationService {
     Response response = await dio.post(url, data: formData);
 
     return OnboardingStep.listFromJson(response.data);
+
+    // TEST //
+    // // Simulate a delay of 5 seconds
+    // await Future.delayed(Duration(seconds: 5));
+
+    // List<OnboardingStep> parsed_response =
+    //     OnboardingStep.listFromJson(jsonDecode(MOCK_JSON_RESPONSE));
+
+    // String debugStr =
+    //     OnboardingStep.onboardingStepsListToString(parsed_response);
+
+    // _log.d("received the following data: $debugStr");
+
+    // // Return mock data
+    // return OnboardingStep.listFromJson(jsonDecode(MOCK_JSON_RESPONSE));
   }
 }

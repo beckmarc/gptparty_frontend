@@ -5,7 +5,7 @@ class OnboardingStep {
   final String title;
   final String description;
   final List<String> links;
-  final List<String> tasks;
+  final Map<String, bool> tasks;
 
   OnboardingStep({
     required this.step,
@@ -21,7 +21,11 @@ class OnboardingStep {
       title: json['title'],
       description: json['description'],
       links: toListString(json['links']) ?? [],
-      tasks: toListString(json['tasks']) ?? [],
+      tasks: Map.fromIterable(
+        toListString(json['tasks']) ?? [],
+        key: (v) => v,
+        value: (v) => false,
+      ),
     );
   }
 
@@ -31,5 +35,14 @@ class OnboardingStep {
         : json
             .map<OnboardingStep>((value) => OnboardingStep.fromJson(value))
             .toList();
+  }
+
+  @override
+  String toString() {
+    return 'OnboardingStep(step: $step, title: $title, description: $description, links: $links, tasks: $tasks)';
+  }
+
+  static String onboardingStepsListToString(List<OnboardingStep> steps) {
+    return steps.map((step) => step.toString()).join(', ');
   }
 }

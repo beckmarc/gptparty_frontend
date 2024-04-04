@@ -59,8 +59,8 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case OnboardingPage.routeName:
-                    return const OnboardingPage();
+                  // case OnboardingPage.routeName:
+                  //   return const OnboardingPage();
                   default:
                     return const OnboardingGenerator();
                 }

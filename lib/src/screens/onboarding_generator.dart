@@ -1,3 +1,5 @@
+import 'package:gptparty_frontend/src/models/api/onboarding_step.dart';
+import 'package:gptparty_frontend/src/onboarding/onboarding_page.dart';
 import 'package:gptparty_frontend/src/screens/onboarding_generator_store.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -19,6 +21,18 @@ class OnboardingGeneratorState extends State<OnboardingGenerator> {
   @override
   void initState() {
     store = OnboardingGeneratorStore();
+
+    reaction((_) => store.onboardingSteps, (List<OnboardingStep>? steps) {
+      if (steps != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OnboardingPage(onboardingSteps: steps),
+          ),
+        );
+      }
+    });
+
     super.initState();
   }
 

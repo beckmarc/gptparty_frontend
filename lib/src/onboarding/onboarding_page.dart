@@ -5,13 +5,21 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gptparty_frontend/src/models/api/onboarding_step.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnboardingPage extends StatefulWidget {
-  const OnboardingPage({super.key});
+  final List<OnboardingStep> onboardingSteps;
+
+  const OnboardingPage({
+    Key? key,
+    required this.onboardingSteps,
+  }) : super(key: key);
 
   static const routeName = '/onboarding';
+
+  // TODO: remove images
 
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
@@ -20,30 +28,30 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   int _currentStep = 0;
 
-  var onboardingSteps = null;
+  // var onboardingSteps = null;
 
   @override
   Widget build(BuildContext context) {
     // Extracting the arguments
-    var id;
-    final args = ModalRoute.of(context)?.settings.arguments;
-    if (args != null) {
-      final mapArgs = args as Map<dynamic, dynamic>;
-      id = mapArgs['id'];
-    } else {
-      id = '123';
-    }
-    print(id);
+    // var id;
+    // final args = ModalRoute.of(context)?.settings.arguments;
+    // if (args != null) {
+    //   final mapArgs = args as Map<dynamic, dynamic>;
+    //   id = mapArgs['id'];
+    // } else {
+    //   id = '123';
+    // }
+    // print(id);
 
-    if (onboardingSteps == null) {
-      onboardingSteps = json.decode(localStorage.getItem(id)!);
+    // if (onboardingSteps == null) {
+    //   onboardingSteps = json.decode(localStorage.getItem(id)!);
 
-      for (var step in onboardingSteps) {
-        for (int i = 0; i < step['tasks'].length; i++) {
-          step['tasks'][i] = {'text': step['tasks'][i], 'isCompleted': false};
-        }
-      }
-    }
+    //   for (var step in onboardingSteps) {
+    //     for (int i = 0; i < step['tasks'].length; i++) {
+    //       step['tasks'][i] = {'text': step['tasks'][i], 'isCompleted': false};
+    //     }
+    //   }
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +69,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
               currentStep: _currentStep,
               onStepTapped: (step) => setState(() => _currentStep = step),
               onStepContinue: () {
-                if (_currentStep < _getSteps(onboardingSteps).length - 1) {
+                if (_currentStep <
+                    _getSteps(widget.onboardingSteps).length - 1) {
                   setState(() {
                     _currentStep++;
                   });
@@ -74,7 +83,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   });
                 }
               },
-              steps: _getSteps(onboardingSteps),
+              steps: _getSteps(widget.onboardingSteps),
               controlsBuilder: (BuildContext context, ControlsDetails details) {
                 return Container();
               },
@@ -85,14 +94,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-  List<Step> _getSteps(onboardingSteps) {
+  List<Step> _getSteps(List<OnboardingStep> onboardingSteps) {
     List<Step> stepsList = [];
     for (var step in onboardingSteps) {
       stepsList.add(
         Step(
           isActive: _currentStep >= 0,
           title: Text(
-            step['title'],
+            step.title,
             style: Theme.of(context).textTheme.headline6, // Style for the title
           ),
           content: Row(
@@ -115,7 +124,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         height: 4), // Space between subheading and description
                     Flexible(
                       child: Text(
-                        step['description'],
+                        step.description,
                         style: TextStyle(
                           color: Colors.grey.shade800,
                           fontSize: 16,
@@ -132,7 +141,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    ...step['links']
+                    ...step.links
                         .map(
                           (link) => InkWell(
                             onTap: () => _launchURL(link),
@@ -156,7 +165,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     ),
                     SizedBox(height: 4),
                     Flexible(
-                      child: createTaskList(step['tasks']),
+                      child: createTaskList(step.tasks),
                     ),
 
                     // Text(
@@ -183,28 +192,32 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return stepsList;
   }
 
-  createTaskList(tasks) {
+  createTaskList(Map<String, bool> tasks) {
+    var taskEntries = tasks.entries.toList();
+
     return ListView.builder(
       padding: EdgeInsets.all(0),
       shrinkWrap: true,
       itemCount: tasks.length,
       itemBuilder: (context, index) {
+        var task = taskEntries[index];
+
         return ListTile(
           visualDensity: VisualDensity(vertical: -4),
           contentPadding: EdgeInsets.symmetric(
               horizontal: 0, vertical: 0), // Reduced vertical padding
           title: Text(
-            tasks[index]['text'],
+            task.key,
             style: TextStyle(
               fontSize: 16,
             ),
           ),
           leading: Checkbox(
-            value: tasks[index]['isCompleted'],
+            value: task.value,
             onChanged: (bool? value) {
               print(value);
               setState(() {
-                tasks[index]['isCompleted'] = value;
+                tasks[task.key] = value!;
               });
             },
           ),
